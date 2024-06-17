@@ -1,0 +1,42 @@
+{
+  "name": "html-to-pdf-converter",
+  "version": "0.1.0",
+  "description": "Html to pdf converter for android",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "scripts": {
+    "build": "expo-module build",
+    "clean": "expo-module clean",
+    "lint": "expo-module lint",
+    "test": "expo-module test",
+    "prepare": "expo-module prepare",
+    "prepublishOnly": "expo-module prepublishOnly",
+    "expo-module": "expo-module",
+    "open:ios": "xed example/ios",
+    "open:android": "open -a \"Android Studio\" example/android"
+  },
+  "keywords": [
+    "react-native",
+    "expo",
+    "html-to-pdf-converter",
+    "HtmlToPdfConverter"
+  ],
+  "repository": "https://github.com/awlodarczyk/html-to-pdf-converter",
+  "bugs": {
+    "url": "https://github.com/awlodarczyk/html-to-pdf-converter/issues"
+  },
+  "author": "Adam Włodarczyk <a.wlodarczyk@hindbrain.pl> (https://github.com/awlodarczyk)",
+  "license": "MIT",
+  "homepage": "https://github.com/awlodarczyk/html-to-pdf-converter#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/react": "^18.0.25",
+    "expo-module-scripts": "^3.5.2",
+    "expo-modules-core": "^1.12.14"
+  },
+  "peerDependencies": {
+    "expo": "*",
+    "react": "*",
+    "react-native": "*"
+  }
+}

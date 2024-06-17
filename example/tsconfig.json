@@ -1,0 +1,10 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "paths": {
+      "html-to-pdf-converter": ["../src/index"],
+      "html-to-pdf-converter/*": ["../src/*"]
+    }
+  }
+}
