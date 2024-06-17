@@ -1,7 +1,13 @@
 package io.hindbrain.pdf.converter
 
+import android.content.Context
+import android.os.Build
+import android.os.Environment
 import expo.modules.kotlin.modules.Module
 import expo.modules.kotlin.modules.ModuleDefinition
+import expo.modules.kotlin.exception.Exceptions
+import expo.modules.kotlin.Promise
+import java.io.File
 
 class HtmlToPdfConverterModule : Module() {
   // Each module class must implement the definition function. The definition consists of components
@@ -33,7 +39,7 @@ class HtmlToPdfConverterModule : Module() {
           "path" to file.absolutePath
         ))
       },{ex->
-        promise.reject(ex.message)
+        promise.reject(HtmlToPdfUnsuccessfulTaskException())
         sendEvent("onPdfFailed", mapOf(
           "exception" to ex.message
         ))
@@ -68,6 +74,19 @@ class HtmlToPdfConverterModule : Module() {
         openPdf(pdfFile)
 
       })
+  }
+  private fun getPdfFilePath(): File? {
+    return when {
+      Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> {
+        context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
+      }
+      Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT -> {
+        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+      }
+      else -> {
+        File(Environment.getExternalStorageDirectory().toString() + "/Documents/")
+      }
+    }
   }
 
 }
