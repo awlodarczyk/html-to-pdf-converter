@@ -24,15 +24,17 @@ class HtmlToPdfConverterModule : Module() {
 
     // Defines a JavaScript function that always returns a Promise and whose native code
     // is by default dispatched on the different thread than the JavaScript runtime runs on.
-    AsyncFunction("convert") { value: String ->
+    AsyncFunction("convert") { value: String, promise: Promise ->
       // Send an event to JavaScript.
       //todo
       val converter = HtmlToPdfConvertor(context)
       convertHtmlToPdf(value, converter, { file ->
+        promise.resolve(file.absolutePath)
         sendEvent("onPdfCreated", mapOf(
           "path" to file.absolutePath
         ))
       },{ex->
+        promise.reject(ex.message)
         sendEvent("onPdfFailed", mapOf(
           "exception" to ex.message
         ))
