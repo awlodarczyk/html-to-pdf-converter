@@ -3,6 +3,8 @@ package io.hindbrain.pdf.converter
 import android.content.Context
 import android.os.Build
 import android.os.Environment
+import android.os.Handler
+import android.os.Looper
 import expo.modules.kotlin.modules.Module
 import expo.modules.kotlin.modules.ModuleDefinition
 import expo.modules.kotlin.exception.Exceptions
@@ -32,18 +34,22 @@ class HtmlToPdfConverterModule : Module() {
     AsyncFunction("convert") { value: String, promise: Promise ->
       // Send an event to JavaScript.
       //todo
-      val converter = HtmlToPdfConvertor(context)
-      convertHtmlToPdf(value, converter, { file ->
-        promise.resolve(file.absolutePath)
-        sendEvent("onPdfCreated", mapOf(
-          "path" to file.absolutePath
-        ))
-      },{ex->
-        promise.reject(HtmlToPdfUnsuccessfulTaskException())
-        sendEvent("onPdfFailed", mapOf(
-          "exception" to ex.message
-        ))
-      })
+      val handler = Handler(Looper.getMainLooper())
+      handler.post {
+        val converter = HtmlToPdfConvertor(context)
+        convertHtmlToPdf(value, converter, { file ->
+          promise.resolve(file.absolutePath)
+          sendEvent("onPdfCreated", mapOf(
+                  "path" to file.absolutePath
+          ))
+        },{ex->
+          promise.reject(HtmlToPdfUnsuccessfulTaskException())
+          sendEvent("onPdfFailed", mapOf(
+                  "exception" to ex.message
+          ))
+        })
+      }
+
 
     }
 
