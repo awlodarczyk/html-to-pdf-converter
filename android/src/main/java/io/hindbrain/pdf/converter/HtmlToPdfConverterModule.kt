@@ -17,8 +17,7 @@ class HtmlToPdfConverterModule : Module() {
 
 
     // Defines event names that the module can send to JavaScript.
-    Events("onPdfCreated")
-    Events("onPdfFailed")
+    Events("onPdfCreated","onPdfFailed")
 
 
 
