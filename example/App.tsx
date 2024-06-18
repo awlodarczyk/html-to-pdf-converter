@@ -325,7 +325,7 @@ export default function App() {
             console.log(path);
 
         }).catch((error)=>{
-          console.log(error);
+          console.warn(error);
         });
     }, []);
   return (

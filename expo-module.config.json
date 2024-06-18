@@ -1,5 +1,5 @@
 {
-  "platforms": ["android"],
+  "platforms": ["android","ios","web"],
   "ios": {
     "modules": ["HtmlToPdfConverterModule"]
   },

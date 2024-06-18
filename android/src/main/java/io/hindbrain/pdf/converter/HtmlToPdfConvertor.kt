@@ -3,6 +3,8 @@ package io.hindbrain.pdf.converter
 
 import android.content.Context
 import android.os.Build
+import android.os.CancellationSignal
+import android.print.PageRange
 import android.print.PdfPrinter
 import android.print.PrintAttributes
 import android.print.PrintAttributes.Resolution
@@ -29,7 +31,7 @@ class HtmlToPdfConvertor(private val context: Context) {
     fun convert(
         pdfLocation: File,
         htmlString: String,
-        onPdfGenerationFailed: PdfGenerationFailedCallback? = null,
+        onPdfGenerationFailed: PdfGenerationFailedCallback,
         onPdfGenerated: PdfGeneratedCallback,
     ) {
 
@@ -54,7 +56,6 @@ class HtmlToPdfConvertor(private val context: Context) {
 
             // generate print document adapter
             val printAdapter = getPrintAdapter(pdfWebView, jobName)
-
             pdfWebView.webChromeClient = object : WebChromeClient() {
                 override fun onProgressChanged(view: WebView, newProgress: Int) {
                     super.onProgressChanged(view, newProgress)
@@ -71,7 +72,7 @@ class HtmlToPdfConvertor(private val context: Context) {
 
                         // generate pdf
                         val pdfPrinter = PdfPrinter(attributes)
-                        pdfPrinter.generate(printAdapter, pdfLocation, onPdfGenerated)
+                        pdfPrinter.generate(printAdapter, pdfLocation, onPdfGenerated,onPdfGenerationFailed)
                     }
                 }
             }

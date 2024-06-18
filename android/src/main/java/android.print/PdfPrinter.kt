@@ -11,7 +11,8 @@ class PdfPrinter(private val printAttributes: PrintAttributes) {
     fun generate(
         printAdapter: PrintDocumentAdapter,
         path: File,
-        onPdfGenerated: (File) -> Unit
+        onPdfGenerated: (File) -> Unit,
+        onPdfFailed: (Exception) -> Unit
     ) {
 
         if (path.exists()) {
@@ -29,11 +30,16 @@ class PdfPrinter(private val printAttributes: PrintAttributes) {
                                 super.onWriteFinished(pages)
                                 onPdfGenerated(path)
                             }
+
+                            override fun onWriteFailed(error: CharSequence?) {
+                                super.onWriteFailed(error)
+                                onPdfFailed(IOException(error.toString()))
+                            }
                         })
                 }
             }, null)
         } catch (e: Exception) {
-            throw e
+            onPdfFailed(e)
         }
     }
 
@@ -50,7 +56,4 @@ class PdfPrinter(private val printAttributes: PrintAttributes) {
         }
     }
 
-    interface OnPdfGeneratedListener {
-        fun onPdfGenerated(pdfFilePath: File)
-    }
 }
